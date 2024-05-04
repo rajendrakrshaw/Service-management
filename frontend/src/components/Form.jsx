@@ -347,7 +347,7 @@ const Form = () => {
           </div>
           <div className={Style.Form_box_btn}>
             <Button
-              btnName="Upload profile"
+              btnName="Submit"
               handleClick={handleSubmit}
               classStyle={Style.button}
               type="submit" // Ensure button type is set to "submit"
