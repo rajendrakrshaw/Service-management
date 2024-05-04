@@ -23,15 +23,26 @@ import Button from "./Button/Button";
 
 const Form = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    memono: "",
+    recievedate: "",
+    name: "",
+    address: "",
+    phone1: "",
+    phone2: "",
     email: "",
-    description: "",
-    website: "",
-    facebook: "",
-    twitter: "",
-    instagram: "",
-    wallet: "",
+    depositby: "",
+    item: "",
+    accessories: "",
+    serialno: "",
+    problems: "",
+    billno: "",
+    billdate: "",
+    warranty: "",
+    standby: "",
+    password: "",
+    signature: "",
   });
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
