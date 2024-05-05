@@ -30,9 +30,13 @@
     margin-left: 1rem;
     font-weight: 900;
     font-size: 1.5rem;
+    
 }
 .Form_box_input{
     margin-top: 2rem;
+}
+.radio{
+    color: var(--icons-color);
 }
 
 .Form_box_input label{
@@ -41,6 +45,7 @@
     margin-left: 1rem;
     font-weight: 700;
     font-size: 1.3rem;
+    color: grey;
 }
 
 .Form_box_input_userName{

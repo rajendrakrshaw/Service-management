@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import { HiOutlineCalendar, HiOutlineMail } from "react-icons/hi";
 import {
   MdOutlineHttp,
@@ -10,6 +11,7 @@ import {
   MdOutlineMail,
   MdOutlinePassword,
   MdOutlineVerified,
+  MdOutlineWhatsapp,
 } from "react-icons/md";
 import {
   TiSocialFacebook,
@@ -23,26 +25,26 @@ import Button from "./Button/Button";
 
 const Form = () => {
   const [formData, setFormData] = useState({
-    memono: "",
-    recievedate: "",
+    // memono: "",
+    receivedDate: "",
     name: "",
     address: "",
-    phone1: "",
-    phone2: "",
+    phone: "",
+    whatsapp: "",
     email: "",
-    depositby: "",
+    depositedBy: "",
+    depositerName: "",
     item: "",
     accessories: "",
-    serialno: "",
+    serialNo: "",
     problems: "",
-    billno: "",
-    billdate: "",
+    billNo: "",
+    billDate: "",
     warranty: "",
     standby: "",
     password: "",
-    signature: "",
+    // signature: "",
   });
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -52,12 +54,18 @@ const Form = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     if (!e) return; // Ensure e is defined
     e.preventDefault();
     // Convert formData to JSON format
     const jsonData = JSON.stringify(formData);
     console.log(jsonData);
+    try {
+      const response = await axios.post('http://localhost:3000/api/jobs', formData);
+      console.log(response.data); // Handle success response
+    } catch (error) {
+      console.error('Error submitting form:', error); // Handle error
+    }
     // Here you can send jsonData to your backend or perform any other action
   };
 
@@ -66,9 +74,9 @@ const Form = () => {
       <div className={Style.Form_box_mid}>
         <form onSubmit={handleSubmit}>
           <div className={Style.Form_section_title}>
-            <h1>Material Recieve</h1>
+            <h1>Material Receive</h1>
           </div>
-          <div className={Style.Form_box_input}>
+          {/* <div className={Style.Form_box_input}>
             <label htmlFor="memono">Memo No</label>
             <input
               type="text"
@@ -78,17 +86,17 @@ const Form = () => {
               onChange={handleInputChange}
               required
             />
-          </div>
+          </div> */}
 
           <div className={Style.Form_box_input}>
-            <label htmlFor="reciecedate">Recieve Date & Time</label>
+            <label htmlFor="recievedDate">Recieve Date</label>
             <div className={Style.Form_box_input_box}>
               <div className={Style.Form_box_input_box_icon}>
                 <HiOutlineCalendar />
               </div>
               <input
                 type="date"
-                name="recievedate"
+                name="receivedDate"
                 placeholder="dd-mm-yyyy hh:mm:ss"
                 onChange={handleInputChange}
                 required
@@ -131,31 +139,35 @@ const Form = () => {
           </div>
 
           <div className={Style.Form_box_input}>
-            <label htmlFor="phone1">Phone No 1</label>
+            <label htmlFor="phone">Phone No</label>
             <div className={Style.Form_box_input_box}>
               <div className={Style.Form_box_input_box_icon}>
                 <MdOutlinePhone />
               </div>
               <input
-                type="text"
-                name="phone1"
-                placeholder="Phone No 1"
+                type="tel"
+                name="phone"
+                placeholder="Phone No"
                 onChange={handleInputChange}
+                pattern="[0-9]{10}" // Only allows exactly 10 numerical digits
+                maxLength="10" // Restricts the input to 10 characters
                 required
               />
             </div>
           </div>
 
           <div className={Style.Form_box_input}>
-            <label htmlFor="phone2">Phone No 2</label>
+            <label htmlFor="whatsapp">WhatsApp No</label>
             <div className={Style.Form_box_input_box}>
               <div className={Style.Form_box_input_box_icon}>
-                <MdOutlinePhone />
+                <MdOutlineWhatsapp />
               </div>
               <input
-                type="text"
-                name="phone2"
-                placeholder="Phone No 2"
+                type="tel"
+                name="whatsapp"
+                placeholder="whatsapp no"
+                pattern="[0-9]{10}" // Only allows exactly 10 numerical digits
+                maxLength="10" // Restricts the input to 10 characters
                 onChange={handleInputChange}
                 required
               />
@@ -177,20 +189,33 @@ const Form = () => {
             </div>
           </div>
           <div className={Style.Form_box_input}>
-            <label htmlFor="depositby">Deposit By</label>
+            <label htmlFor="depositedBy">Deposited By</label>
             <div>
               <select
-                name="depositby"
+                name="depositedBy"
                 className={Style.Form_box_input_userName}
                 onChange={handleInputChange}
                 required
               >
                 <option value="">Select an option</option>
-                <option value="bank">Self</option>
-                <option value="paypal">Engineer</option>
+                <option value="Self">Self</option>
+                <option value="Engineer">Engineer</option>
+                <option value="Others">Others</option>
+
                 {/* <option value="creditcard">Credit Card</option> */}
               </select>
             </div>
+            {formData.depositedby === "Engineer" ||
+            formData.depositedby === "Others" ? (
+              <input
+                type="text"
+                name="depositerName"
+                placeholder="Enter depositer's name"
+                className={Style.Form_box_input_userName}
+                onChange={handleInputChange}
+                required
+              />
+            ) : null}
           </div>
 
           <div className={Style.Form_box_input}>
@@ -221,10 +246,10 @@ const Form = () => {
             </div>
           </div>
           <div className={Style.Form_box_input}>
-            <label htmlFor="serialno">Serial No</label>
+            <label htmlFor="serialNo">Serial No</label>
             <input
               type="text"
-              name="serialno"
+              name="serialNo"
               placeholder="#####"
               className={Style.Form_box_input_userName}
               onChange={handleInputChange}
@@ -248,10 +273,10 @@ const Form = () => {
           </div>
 
           <div className={Style.Form_box_input}>
-            <label htmlFor="billno">Bill/AMC No</label>
+            <label htmlFor="billNo">Bill/AMC No</label>
             <input
               type="text"
-              name="billno"
+              name="billNo"
               placeholder="#####"
               className={Style.Form_box_input_userName}
               onChange={handleInputChange}
@@ -259,14 +284,14 @@ const Form = () => {
             />
           </div>
           <div className={Style.Form_box_input}>
-            <label htmlFor="billdate">Bill/AMC Date</label>
+            <label htmlFor="billDate">Bill/AMC Date</label>
             <div className={Style.Form_box_input_box}>
               <div className={Style.Form_box_input_box_icon}>
                 <HiOutlineCalendar />
               </div>
               <input
                 type="date"
-                name="billdate"
+                name="billDate"
                 placeholder="dd-mm-yyyy"
                 onChange={handleInputChange}
                 required
@@ -276,11 +301,11 @@ const Form = () => {
           <div className={Style.Form_box_input}>
             <label htmlFor="warranty">Warranty</label>
             <div Style={"display:flex;"}>
-              <label>
+              <label >
                 <input
                   type="radio"
                   name="warranty"
-                  value="yes"
+                  value="true"
                   onChange={handleInputChange}
                   required
                 />
@@ -290,13 +315,12 @@ const Form = () => {
                 <input
                   type="radio"
                   name="warranty"
-                  value="no"
+                  value="false"
                   onChange={handleInputChange}
                   required
                 />
                 No
               </label>
-              
             </div>
           </div>
           <div className={Style.Form_box_input}>
@@ -306,7 +330,7 @@ const Form = () => {
                 <input
                   type="radio"
                   name="standby"
-                  value="yes"
+                  value="true"
                   onChange={handleInputChange}
                   required
                 />
@@ -316,13 +340,12 @@ const Form = () => {
                 <input
                   type="radio"
                   name="standby"
-                  value="no"
+                  value="false"
                   onChange={handleInputChange}
                   required
                 />
                 No
               </label>
-              
             </div>
           </div>
 
@@ -341,7 +364,7 @@ const Form = () => {
               />
             </div>
           </div>
-          <div className={Style.Form_box_input}>
+          {/* <div className={Style.Form_box_input}>
             <label htmlFor="signature">Recieved By Signature</label>
             <div className={Style.Form_box_input_box}>
               <div className={Style.Form_box_input_box_icon}>
@@ -355,7 +378,7 @@ const Form = () => {
                 required
               />
             </div>
-          </div>
+          </div> */}
           <div className={Style.Form_box_btn}>
             <Button
               btnName="Submit"
