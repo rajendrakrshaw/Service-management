@@ -13,14 +13,18 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 // Routes
+app.use("/", (req,res)=>{
+    res.json({
+        message : "hello"
+    })
+});
 app.use('/api', jobsRoutes);
 
 // MongoDB Connection
 mongoose.connect(DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true
+ 
 })
 .then(() => {
   console.log('Connected to MongoDB');
