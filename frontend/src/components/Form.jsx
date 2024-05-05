@@ -205,8 +205,8 @@ const Form = () => {
                 {/* <option value="creditcard">Credit Card</option> */}
               </select>
             </div>
-            {formData.depositedby === "Engineer" ||
-            formData.depositedby === "Others" ? (
+            {formData.depositedBy === "Engineer" ||
+            formData.depositedBy === "Others" ? (
               <input
                 type="text"
                 name="depositerName"
