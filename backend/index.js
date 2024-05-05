@@ -13,12 +13,12 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 // Routes
-app.use("/", (req,res)=>{
-    res.json({
-        message : "hello"
-    })
-});
-app.use('/api', jobsRoutes);
+// app.use("/", (req,res)=>{
+//     res.json({
+//         message : "hello"
+//     })
+// });
+app.use('/', jobsRoutes);
 
 // MongoDB Connection
 mongoose.connect(DB, {

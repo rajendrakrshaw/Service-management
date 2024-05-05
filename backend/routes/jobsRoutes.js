@@ -4,19 +4,25 @@ const express = require('express');
 const router = express.Router();
 const formController = require('../controllers/jobsController');
 
+router.get('/', (req,res)=>{
+        res.json({
+            message : "hello"
+        })
+    });
+
 // Create form
-router.post('/jobs', formController.createJobs);
+router.post('/api/jobs', formController.createJobs);
 
 // Get all forms
-router.get('/jobs', formController.getAllJobs);
+router.get('/api/jobs', formController.getAllJobs);
 
 // Get form by ID
-router.get('/jobs/:id', formController.getJobsById);
+router.get('/api/jobs/:id', formController.getJobsById);
 
 // Update form
-router.put('/jobs/:id', formController.updateJobs);
+router.put('/api/jobs/:id', formController.updateJobs);
 
 // Delete form
-router.delete('/jobs/:id', formController.deleteJobs);
+router.delete('/api/jobs/:id', formController.deleteJobs);
 
 module.exports = router;
