@@ -46,6 +46,26 @@ const Form = () => {
     // signature: "",
   });
 
+  const initialForm = {
+    receivedDate: "",
+    name: "",
+    address: "",
+    phone: "",
+    whatsapp: "",
+    email: "",
+    depositedBy: "",
+    depositerName: "",
+    item: "",
+    accessories: "",
+    serialNo: "",
+    problems: "",
+    billNo: "",
+    billDate: "",
+    warranty: "",
+    standby: "",
+    password: "",
+  }
+  const [submissionStatus, setSubmissionStatus] = useState(null);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -63,8 +83,16 @@ const Form = () => {
     try {
       const response = await axios.post('https://service-management-ashy.vercel.app/api/jobs', formData);
       console.log(response.data); // Handle success response
+      setSubmissionStatus(true);
+
     } catch (error) {
       console.error('Error submitting form:', error); // Handle error
+      setSubmissionStatus(false);
+
+    }
+    finally {
+      // Refresh the page
+      window.location.reload();
     }
     // Here you can send jsonData to your backend or perform any other action
   };
@@ -386,6 +414,10 @@ const Form = () => {
               classStyle={Style.button}
               type="submit" // Ensure button type is set to "submit"
             />
+            {/* Conditional rendering of submission message */}
+          {submissionStatus === true && <p className={Style.successMessage}>Form submitted successfully!</p>}
+          {submissionStatus === false && <p className={Style.errorMessage}>Failed to submit form. Please try again.</p>}
+
           </div>
         </form>
       </div>
