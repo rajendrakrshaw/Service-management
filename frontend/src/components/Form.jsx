@@ -10,7 +10,7 @@ import {
   MdOutlinePhone,
   MdOutlineMail,
   MdOutlinePassword,
-  MdOutlineVerified,
+  MdOutlineVerified, 
   MdOutlineWhatsapp,
 } from "react-icons/md";
 import {
@@ -61,7 +61,7 @@ const Form = () => {
     const jsonData = JSON.stringify(formData);
     console.log(jsonData);
     try {
-      const response = await axios.post('http://localhost:3000/api/jobs', formData);
+      const response = await axios.post('https://service-management-ashy.vercel.app/api/jobs', formData);
       console.log(response.data); // Handle success response
     } catch (error) {
       console.error('Error submitting form:', error); // Handle error
