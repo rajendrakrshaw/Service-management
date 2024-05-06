@@ -42,7 +42,7 @@ const Form = () => {
     billDate: "",
     warranty: "",
     standby: "",
-    password: "",
+    // password: "",
     // signature: "",
   });
 
@@ -63,7 +63,7 @@ const Form = () => {
     billDate: "",
     warranty: "",
     standby: "",
-    password: "",
+    // password: "",
   }
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const handleInputChange = (e) => {
@@ -377,7 +377,7 @@ const Form = () => {
             </div>
           </div>
 
-          <div className={Style.Form_box_input}>
+          {/* <div className={Style.Form_box_input}>
             <label htmlFor="password">Pasword</label>
             <div className={Style.Form_box_input_box}>
               <div className={Style.Form_box_input_box_icon}>
@@ -391,7 +391,7 @@ const Form = () => {
                 required
               />
             </div>
-          </div>
+          </div> */}
           {/* <div className={Style.Form_box_input}>
             <label htmlFor="signature">Recieved By Signature</label>
             <div className={Style.Form_box_input_box}>

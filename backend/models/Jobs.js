@@ -19,9 +19,9 @@ const formSchema = new mongoose.Schema({
   billDate: { type: Date, required: true },
   warranty: { type: Boolean, required: true },
   standby: { type: Boolean, required: true },
-  password: { type: String, required: true }
+//   password: { type: String, required: true }
 }, { timestamps: true });
 
-const Jobs = mongoose.model('jobs', formSchema);
+const Jobs = mongoose.model('job', formSchema);
 
 module.exports = Jobs;

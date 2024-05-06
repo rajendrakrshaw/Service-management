@@ -180,7 +180,7 @@ const Table = () => {
                       <strong>Bill Date:</strong> {item.billDate}<br />
                       <strong>Warranty:</strong> {item.warranty}<br />
                       <strong>Standby:</strong> {item.standby}<br />
-                      <strong>Password:</strong> {item.password}<br />
+                      {/* <strong>Password:</strong> {item.password}<br /> */}
                     </div>
                   </td>
                 </tr>
