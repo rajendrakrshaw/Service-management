@@ -1,7 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Form from './components/Form';
+import ReceiveMaterialForm from './components/ReceiveMaterial/ReceiveMaterialForm';
+import AssignEngineerForm from './components/AssignEngineer/AssignEngineerForm';
 import Table from './components/Table/Table';
 function App() {
   return (
@@ -10,8 +11,10 @@ function App() {
         {/* <Header /> */}
         <Routes>
           
-          <Route path="/" element={ <Form />} />
+          <Route path="/" element={ <ReceiveMaterialForm />} />
           <Route path="/admin" element={ <Table />} />
+          <Route path="/admin/assign" element={ <AssignEngineerForm />} />
+
           {/* <Route path="/services" element={ <Services />} />
           <Route path="/contact" element={ <Contact />} /> */}
         </Routes>

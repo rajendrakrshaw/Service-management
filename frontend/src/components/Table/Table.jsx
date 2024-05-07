@@ -140,6 +140,7 @@
 
 // export default Table;
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
 import styles from './Table.module.css';
 import {
@@ -152,7 +153,7 @@ const Table = () => {
   const [expandedRow, setExpandedRow] = useState(null);
   const [numVisibleColumns, setNumVisibleColumns] = useState(16);
   const [openMenuIndex, setOpenMenuIndex] = useState(null); // Track which menu is open
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchData();
     handleResize();
@@ -203,6 +204,10 @@ const Table = () => {
     setOpenMenuIndex(null); // Close the menu
   };
 
+  const handleAssignClick = (item, index) => {
+    // Navigate to another component along with the row data
+    navigate('/admin/assign', { state: { rowData: item, index: index } });
+  };
   return (
     <div className={styles.tableContainer}>
       <div className={styles.horizontalScrollContainer}>
@@ -212,6 +217,8 @@ const Table = () => {
               <th>#</th>
               <th>Name</th>
               <th>Address</th>
+              {/* {numVisibleColumns >= 3 && <th>Address</th>} */}
+
               {numVisibleColumns >= 3 && <th>Phone</th>}
               {numVisibleColumns >= 4 && <th>Email</th>}
               {numVisibleColumns >= 5 && <th>Deposited By</th>}
@@ -234,6 +241,8 @@ const Table = () => {
                   <td>{index + 1}</td>
                   <td>{item.name}</td>
                   <td>{item.address}</td>
+                  {/* {numVisibleColumns >= 3 && <td>{item.address}</td>} */}
+
                   {numVisibleColumns >= 3 && <td>{item.phone}</td>}
                   {numVisibleColumns >= 4 && <td>{item.email}</td>}
                   {numVisibleColumns >= 5 && <td>{item.depositedBy}</td>}
@@ -252,7 +261,7 @@ const Table = () => {
                       {openMenuIndex === index && (
                         <Menu
                           options={[
-                            { label: 'Assign', onClick: () => console.log('Option 1 clicked') },
+                            { label: 'Assign', onClick: () => handleAssignClick(item, index+1) } // Assign option
                             // { label: 'Option 2', onClick: () => console.log('Option 2 clicked') },
                             // { label: 'Option 3', onClick: () => console.log('Option 3 clicked') }
                           ]}
@@ -269,6 +278,7 @@ const Table = () => {
                   <tr>
                     <td colSpan={numVisibleColumns + 2}>
                       <div className={styles.expandedRow}>
+                        
                         <strong>Received Date:</strong> {item.receivedDate}<br />
                         <strong>Name:</strong> {item.name}<br />
                         <strong>Address:</strong> {item.address}<br />
