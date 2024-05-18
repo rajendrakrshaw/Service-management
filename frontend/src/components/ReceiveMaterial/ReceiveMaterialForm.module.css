@@ -22,7 +22,15 @@
 .Form_box_large {
     width: 90%;
 }
-
+.Form_address{
+    width: 32%;
+}
+.Form_checks{
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .Form_seciton_title h1{
     display: block;
     text-align: left;
@@ -52,12 +60,19 @@
     width: 100%;
     border: 1px solid var(--icons-color);
     padding: 1rem;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     background-color: transparent;
     margin-top: .5rem;
     outline: none;
 }
 
+.Form_section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px; /* Adjust the gap between fields as needed */
+  }
+  
 .Form_box_input::placeholder{
     font-size: 1.2rem;
     color: var(--icons-color);
@@ -66,7 +81,7 @@
 .Form_box_input_box{
     width: 100%;
     border: 1px solid var(--icons-color);
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     align-items: center;
     display: flex;
     gap: 1rem;
@@ -93,7 +108,9 @@
     width: 100%;
     background-color: transparent;
     outline: none;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
+    border: 1px solid var(--icons-color);
+
     padding: 1rem;
 }
 
@@ -129,6 +146,12 @@
     .Form_box_mid {
         width: 90%;
        
+    }
+    .Form_address{
+        width: 100%;
+    }
+    .Form_checks{
+        width: 40%;
     }
 }
 

@@ -29,7 +29,7 @@ const ReceiveMaterialForm = () => {
     const { rowData, index } = location.state;
   
   const [formData, setFormData] = useState({
-    memono: "",
+    memono: index,
     Engineer: "",
   });
 
