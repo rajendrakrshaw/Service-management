@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { HiOutlineCalendar, HiOutlineMail } from "react-icons/hi";
 import {
@@ -26,929 +26,28 @@ import Button from "../Button/Button";
 
 const ReceiveMaterialForm = () => {
   const [formData, setFormData] = useState({
-    // memono: "",
-    // receivedDate: "",
     name: "",
     state: "",
     district: "",
-    block: "",
+    post: "",
     pincode: "",
-    lamdmark: "",
+    landmark: "",
+    addressline: "",
     phone: "",
     whatsapp: "",
     email: "",
     depositedBy: "",
     depositerName: "",
-    item: "",
-    accessories: "",
-    serialNo: "",
-    problems: "",
+    item: [],
+    accessories: [],
+    // serialNo: "",
+    problems: [],
     billNo: "",
+    bill: "",
     billDate: "",
     warranty: "",
     standby: "",
-    // password: "",
-    // signature: "",
   });
-  // const states = [
-  //      {
-  //         "state":"Andhra Pradesh",
-  //         "districts":[
-  //            "Anantapur",
-  //            "Chittoor",
-  //            "East Godavari",
-  //            "Guntur",
-  //            "Krishna",
-  //            "Kurnool",
-  //            "Nellore",
-  //            "Prakasam",
-  //            "Srikakulam",
-  //            "Visakhapatnam",
-  //            "Vizianagaram",
-  //            "West Godavari",
-  //            "YSR Kadapa"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Arunachal Pradesh",
-  //         "districts":[
-  //            "Tawang",
-  //            "West Kameng",
-  //            "East Kameng",
-  //            "Papum Pare",
-  //            "Kurung Kumey",
-  //            "Kra Daadi",
-  //            "Lower Subansiri",
-  //            "Upper Subansiri",
-  //            "West Siang",
-  //            "East Siang",
-  //            "Siang",
-  //            "Upper Siang",
-  //            "Lower Siang",
-  //            "Lower Dibang Valley",
-  //            "Dibang Valley",
-  //            "Anjaw",
-  //            "Lohit",
-  //            "Namsai",
-  //            "Changlang",
-  //            "Tirap",
-  //            "Longding"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Assam",
-  //         "districts":[
-  //            "Baksa",
-  //            "Barpeta",
-  //            "Biswanath",
-  //            "Bongaigaon",
-  //            "Cachar",
-  //            "Charaideo",
-  //            "Chirang",
-  //            "Darrang",
-  //            "Dhemaji",
-  //            "Dhubri",
-  //            "Dibrugarh",
-  //            "Goalpara",
-  //            "Golaghat",
-  //            "Hailakandi",
-  //            "Hojai",
-  //            "Jorhat",
-  //            "Kamrup Metropolitan",
-  //            "Kamrup",
-  //            "Karbi Anglong",
-  //            "Karimganj",
-  //            "Kokrajhar",
-  //            "Lakhimpur",
-  //            "Majuli",
-  //            "Morigaon",
-  //            "Nagaon",
-  //            "Nalbari",
-  //            "Dima Hasao",
-  //            "Sivasagar",
-  //            "Sonitpur",
-  //            "South Salmara-Mankachar",
-  //            "Tinsukia",
-  //            "Udalguri",
-  //            "West Karbi Anglong"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Bihar",
-  //         "districts":[
-  //            "Araria",
-  //            "Arwal",
-  //            "Aurangabad",
-  //            "Banka",
-  //            "Begusarai",
-  //            "Bhagalpur",
-  //            "Bhojpur",
-  //            "Buxar",
-  //            "Darbhanga",
-  //            "East Champaran (Motihari)",
-  //            "Gaya",
-  //            "Gopalganj",
-  //            "Jamui",
-  //            "Jehanabad",
-  //            "Kaimur (Bhabua)",
-  //            "Katihar",
-  //            "Khagaria",
-  //            "Kishanganj",
-  //            "Lakhisarai",
-  //            "Madhepura",
-  //            "Madhubani",
-  //            "Munger (Monghyr)",
-  //            "Muzaffarpur",
-  //            "Nalanda",
-  //            "Nawada",
-  //            "Patna",
-  //            "Purnia (Purnea)",
-  //            "Rohtas",
-  //            "Saharsa",
-  //            "Samastipur",
-  //            "Saran",
-  //            "Sheikhpura",
-  //            "Sheohar",
-  //            "Sitamarhi",
-  //            "Siwan",
-  //            "Supaul",
-  //            "Vaishali",
-  //            "West Champaran"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Chandigarh (UT)",
-  //         "districts":[
-  //            "Chandigarh"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Chhattisgarh",
-  //         "districts":[
-  //            "Balod",
-  //            "Baloda Bazar",
-  //            "Balrampur",
-  //            "Bastar",
-  //            "Bemetara",
-  //            "Bijapur",
-  //            "Bilaspur",
-  //            "Dantewada (South Bastar)",
-  //            "Dhamtari",
-  //            "Durg",
-  //            "Gariyaband",
-  //            "Janjgir-Champa",
-  //            "Jashpur",
-  //            "Kabirdham (Kawardha)",
-  //            "Kanker (North Bastar)",
-  //            "Kondagaon",
-  //            "Korba",
-  //            "Korea (Koriya)",
-  //            "Mahasamund",
-  //            "Mungeli",
-  //            "Narayanpur",
-  //            "Raigarh",
-  //            "Raipur",
-  //            "Rajnandgaon",
-  //            "Sukma",
-  //            "Surajpur  ",
-  //            "Surguja"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Dadra and Nagar Haveli (UT)",
-  //         "districts":[
-  //            "Dadra & Nagar Haveli"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Daman and Diu (UT)",
-  //         "districts":[
-  //            "Daman",
-  //            "Diu"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Delhi (NCT)",
-  //         "districts":[
-  //            "Central Delhi",
-  //            "East Delhi",
-  //            "New Delhi",
-  //            "North Delhi",
-  //            "North East  Delhi",
-  //            "North West  Delhi",
-  //            "Shahdara",
-  //            "South Delhi",
-  //            "South East Delhi",
-  //            "South West  Delhi",
-  //            "West Delhi"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Goa",
-  //         "districts":[
-  //            "North Goa",
-  //            "South Goa"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Gujarat",
-  //         "districts":[
-  //            "Ahmedabad",
-  //            "Amreli",
-  //            "Anand",
-  //            "Aravalli",
-  //            "Banaskantha (Palanpur)",
-  //            "Bharuch",
-  //            "Bhavnagar",
-  //            "Botad",
-  //            "Chhota Udepur",
-  //            "Dahod",
-  //            "Dangs (Ahwa)",
-  //            "Devbhoomi Dwarka",
-  //            "Gandhinagar",
-  //            "Gir Somnath",
-  //            "Jamnagar",
-  //            "Junagadh",
-  //            "Kachchh",
-  //            "Kheda (Nadiad)",
-  //            "Mahisagar",
-  //            "Mehsana",
-  //            "Morbi",
-  //            "Narmada (Rajpipla)",
-  //            "Navsari",
-  //            "Panchmahal (Godhra)",
-  //            "Patan",
-  //            "Porbandar",
-  //            "Rajkot",
-  //            "Sabarkantha (Himmatnagar)",
-  //            "Surat",
-  //            "Surendranagar",
-  //            "Tapi (Vyara)",
-  //            "Vadodara",
-  //            "Valsad"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Haryana",
-  //         "districts":[
-  //            "Ambala",
-  //            "Bhiwani",
-  //            "Charkhi Dadri",
-  //            "Faridabad",
-  //            "Fatehabad",
-  //            "Gurgaon",
-  //            "Hisar",
-  //            "Jhajjar",
-  //            "Jind",
-  //            "Kaithal",
-  //            "Karnal",
-  //            "Kurukshetra",
-  //            "Mahendragarh",
-  //            "Mewat",
-  //            "Palwal",
-  //            "Panchkula",
-  //            "Panipat",
-  //            "Rewari",
-  //            "Rohtak",
-  //            "Sirsa",
-  //            "Sonipat",
-  //            "Yamunanagar"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Himachal Pradesh",
-  //         "districts":[
-  //            "Bilaspur",
-  //            "Chamba",
-  //            "Hamirpur",
-  //            "Kangra",
-  //            "Kinnaur",
-  //            "Kullu",
-  //            "Lahaul &amp; Spiti",
-  //            "Mandi",
-  //            "Shimla",
-  //            "Sirmaur (Sirmour)",
-  //            "Solan",
-  //            "Una"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Jammu and Kashmir",
-  //         "districts":[
-  //            "Anantnag",
-  //            "Bandipore",
-  //            "Baramulla",
-  //            "Budgam",
-  //            "Doda",
-  //            "Ganderbal",
-  //            "Jammu",
-  //            "Kargil",
-  //            "Kathua",
-  //            "Kishtwar",
-  //            "Kulgam",
-  //            "Kupwara",
-  //            "Leh",
-  //            "Poonch",
-  //            "Pulwama",
-  //            "Rajouri",
-  //            "Ramban",
-  //            "Reasi",
-  //            "Samba",
-  //            "Shopian",
-  //            "Srinagar",
-  //            "Udhampur"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Jharkhand",
-  //         "districts":[
-  //            "Bokaro",
-  //            "Chatra",
-  //            "Deoghar",
-  //            "Dhanbad",
-  //            "Dumka",
-  //            "East Singhbhum",
-  //            "Garhwa",
-  //            "Giridih",
-  //            "Godda",
-  //            "Gumla",
-  //            "Hazaribag",
-  //            "Jamtara",
-  //            "Khunti",
-  //            "Koderma",
-  //            "Latehar",
-  //            "Lohardaga",
-  //            "Pakur",
-  //            "Palamu",
-  //            "Ramgarh",
-  //            "Ranchi",
-  //            "Sahibganj",
-  //            "Seraikela-Kharsawan",
-  //            "Simdega",
-  //            "West Singhbhum"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Karnataka",
-  //         "districts":[
-  //            "Bagalkot",
-  //            "Ballari (Bellary)",
-  //            "Belagavi (Belgaum)",
-  //            "Bengaluru (Bangalore) Rural",
-  //            "Bengaluru (Bangalore) Urban",
-  //            "Bidar",
-  //            "Chamarajanagar",
-  //            "Chikballapur",
-  //            "Chikkamagaluru (Chikmagalur)",
-  //            "Chitradurga",
-  //            "Dakshina Kannada",
-  //            "Davangere",
-  //            "Dharwad",
-  //            "Gadag",
-  //            "Hassan",
-  //            "Haveri",
-  //            "Kalaburagi (Gulbarga)",
-  //            "Kodagu",
-  //            "Kolar",
-  //            "Koppal",
-  //            "Mandya",
-  //            "Mysuru (Mysore)",
-  //            "Raichur",
-  //            "Ramanagara",
-  //            "Shivamogga (Shimoga)",
-  //            "Tumakuru (Tumkur)",
-  //            "Udupi",
-  //            "Uttara Kannada (Karwar)",
-  //            "Vijayapura (Bijapur)",
-  //            "Yadgir"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Kerala",
-  //         "districts":[
-  //            "Alappuzha",
-  //            "Ernakulam",
-  //            "Idukki",
-  //            "Kannur",
-  //            "Kasaragod",
-  //            "Kollam",
-  //            "Kottayam",
-  //            "Kozhikode",
-  //            "Malappuram",
-  //            "Palakkad",
-  //            "Pathanamthitta",
-  //            "Thiruvananthapuram",
-  //            "Thrissur",
-  //            "Wayanad"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Lakshadweep (UT)",
-  //         "districts":[
-  //            "Agatti",
-  //            "Amini",
-  //            "Androth",
-  //            "Bithra",
-  //            "Chethlath",
-  //            "Kavaratti",
-  //            "Kadmath",
-  //            "Kalpeni",
-  //            "Kilthan",
-  //            "Minicoy"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Madhya Pradesh",
-  //         "districts":[
-  //            "Agar Malwa",
-  //            "Alirajpur",
-  //            "Anuppur",
-  //            "Ashoknagar",
-  //            "Balaghat",
-  //            "Barwani",
-  //            "Betul",
-  //            "Bhind",
-  //            "Bhopal",
-  //            "Burhanpur",
-  //            "Chhatarpur",
-  //            "Chhindwara",
-  //            "Damoh",
-  //            "Datia",
-  //            "Dewas",
-  //            "Dhar",
-  //            "Dindori",
-  //            "Guna",
-  //            "Gwalior",
-  //            "Harda",
-  //            "Hoshangabad",
-  //            "Indore",
-  //            "Jabalpur",
-  //            "Jhabua",
-  //            "Katni",
-  //            "Khandwa",
-  //            "Khargone",
-  //            "Mandla",
-  //            "Mandsaur",
-  //            "Morena",
-  //            "Narsinghpur",
-  //            "Neemuch",
-  //            "Panna",
-  //            "Raisen",
-  //            "Rajgarh",
-  //            "Ratlam",
-  //            "Rewa",
-  //            "Sagar",
-  //            "Satna",
-  //            "Sehore",
-  //            "Seoni",
-  //            "Shahdol",
-  //            "Shajapur",
-  //            "Sheopur",
-  //            "Shivpuri",
-  //            "Sidhi",
-  //            "Singrauli",
-  //            "Tikamgarh",
-  //            "Ujjain",
-  //            "Umaria",
-  //            "Vidisha"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Maharashtra",
-  //         "districts":[
-  //            "Ahmednagar",
-  //            "Akola",
-  //            "Amravati",
-  //            "Aurangabad",
-  //            "Beed",
-  //            "Bhandara",
-  //            "Buldhana",
-  //            "Chandrapur",
-  //            "Dhule",
-  //            "Gadchiroli",
-  //            "Gondia",
-  //            "Hingoli",
-  //            "Jalgaon",
-  //            "Jalna",
-  //            "Kolhapur",
-  //            "Latur",
-  //            "Mumbai City",
-  //            "Mumbai Suburban",
-  //            "Nagpur",
-  //            "Nanded",
-  //            "Nandurbar",
-  //            "Nashik",
-  //            "Osmanabad",
-  //            "Palghar",
-  //            "Parbhani",
-  //            "Pune",
-  //            "Raigad",
-  //            "Ratnagiri",
-  //            "Sangli",
-  //            "Satara",
-  //            "Sindhudurg",
-  //            "Solapur",
-  //            "Thane",
-  //            "Wardha",
-  //            "Washim",
-  //            "Yavatmal"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Manipur",
-  //         "districts":[
-  //            "Bishnupur",
-  //            "Chandel",
-  //            "Churachandpur",
-  //            "Imphal East",
-  //            "Imphal West",
-  //            "Jiribam",
-  //            "Kakching",
-  //            "Kamjong",
-  //            "Kangpokpi",
-  //            "Noney",
-  //            "Pherzawl",
-  //            "Senapati",
-  //            "Tamenglong",
-  //            "Tengnoupal",
-  //            "Thoubal",
-  //            "Ukhrul"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Meghalaya",
-  //         "districts":[
-  //            "East Garo Hills",
-  //            "East Jaintia Hills",
-  //            "East Khasi Hills",
-  //            "North Garo Hills",
-  //            "Ri Bhoi",
-  //            "South Garo Hills",
-  //            "South West Garo Hills ",
-  //            "South West Khasi Hills",
-  //            "West Garo Hills",
-  //            "West Jaintia Hills",
-  //            "West Khasi Hills"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Mizoram",
-  //         "districts":[
-  //            "Aizawl",
-  //            "Champhai",
-  //            "Kolasib",
-  //            "Lawngtlai",
-  //            "Lunglei",
-  //            "Mamit",
-  //            "Saiha",
-  //            "Serchhip"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Nagaland",
-  //         "districts":[
-  //            "Dimapur",
-  //            "Kiphire",
-  //            "Kohima",
-  //            "Longleng",
-  //            "Mokokchung",
-  //            "Mon",
-  //            "Peren",
-  //            "Phek",
-  //            "Tuensang",
-  //            "Wokha",
-  //            "Zunheboto"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Odisha",
-  //         "districts":[
-  //            "Angul",
-  //            "Balangir",
-  //            "Balasore",
-  //            "Bargarh",
-  //            "Bhadrak",
-  //            "Boudh",
-  //            "Cuttack",
-  //            "Deogarh",
-  //            "Dhenkanal",
-  //            "Gajapati",
-  //            "Ganjam",
-  //            "Jagatsinghapur",
-  //            "Jajpur",
-  //            "Jharsuguda",
-  //            "Kalahandi",
-  //            "Kandhamal",
-  //            "Kendrapara",
-  //            "Kendujhar (Keonjhar)",
-  //            "Khordha",
-  //            "Koraput",
-  //            "Malkangiri",
-  //            "Mayurbhanj",
-  //            "Nabarangpur",
-  //            "Nayagarh",
-  //            "Nuapada",
-  //            "Puri",
-  //            "Rayagada",
-  //            "Sambalpur",
-  //            "Sonepur",
-  //            "Sundargarh"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Puducherry (UT)",
-  //         "districts":[
-  //            "Karaikal",
-  //            "Mahe",
-  //            "Pondicherry",
-  //            "Yanam"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Punjab",
-  //         "districts":[
-  //            "Amritsar",
-  //            "Barnala",
-  //            "Bathinda",
-  //            "Faridkot",
-  //            "Fatehgarh Sahib",
-  //            "Fazilka",
-  //            "Ferozepur",
-  //            "Gurdaspur",
-  //            "Hoshiarpur",
-  //            "Jalandhar",
-  //            "Kapurthala",
-  //            "Ludhiana",
-  //            "Mansa",
-  //            "Moga",
-  //            "Muktsar",
-  //            "Nawanshahr (Shahid Bhagat Singh Nagar)",
-  //            "Pathankot",
-  //            "Patiala",
-  //            "Rupnagar",
-  //            "Sahibzada Ajit Singh Nagar (Mohali)",
-  //            "Sangrur",
-  //            "Tarn Taran"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Rajasthan",
-  //         "districts":[
-  //            "Ajmer",
-  //            "Alwar",
-  //            "Banswara",
-  //            "Baran",
-  //            "Barmer",
-  //            "Bharatpur",
-  //            "Bhilwara",
-  //            "Bikaner",
-  //            "Bundi",
-  //            "Chittorgarh",
-  //            "Churu",
-  //            "Dausa",
-  //            "Dholpur",
-  //            "Dungarpur",
-  //            "Hanumangarh",
-  //            "Jaipur",
-  //            "Jaisalmer",
-  //            "Jalore",
-  //            "Jhalawar",
-  //            "Jhunjhunu",
-  //            "Jodhpur",
-  //            "Karauli",
-  //            "Kota",
-  //            "Nagaur",
-  //            "Pali",
-  //            "Pratapgarh",
-  //            "Rajsamand",
-  //            "Sawai Madhopur",
-  //            "Sikar",
-  //            "Sirohi",
-  //            "Sri Ganganagar",
-  //            "Tonk",
-  //            "Udaipur"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Sikkim",
-  //         "districts":[
-  //            "East Sikkim",
-  //            "North Sikkim",
-  //            "South Sikkim",
-  //            "West Sikkim"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Tamil Nadu",
-  //         "districts":[
-  //            "Ariyalur",
-  //            "Chennai",
-  //            "Coimbatore",
-  //            "Cuddalore",
-  //            "Dharmapuri",
-  //            "Dindigul",
-  //            "Erode",
-  //            "Kanchipuram",
-  //            "Kanyakumari",
-  //            "Karur",
-  //            "Krishnagiri",
-  //            "Madurai",
-  //            "Nagapattinam",
-  //            "Namakkal",
-  //            "Nilgiris",
-  //            "Perambalur",
-  //            "Pudukkottai",
-  //            "Ramanathapuram",
-  //            "Salem",
-  //            "Sivaganga",
-  //            "Thanjavur",
-  //            "Theni",
-  //            "Thoothukudi (Tuticorin)",
-  //            "Tiruchirappalli",
-  //            "Tirunelveli",
-  //            "Tiruppur",
-  //            "Tiruvallur",
-  //            "Tiruvannamalai",
-  //            "Tiruvarur",
-  //            "Vellore",
-  //            "Viluppuram",
-  //            "Virudhunagar"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Telangana",
-  //         "districts":[
-  //            "Adilabad",
-  //            "Bhadradri Kothagudem",
-  //            "Hyderabad",
-  //            "Jagtial",
-  //            "Jangaon",
-  //            "Jayashankar Bhoopalpally",
-  //            "Jogulamba Gadwal",
-  //            "Kamareddy",
-  //            "Karimnagar",
-  //            "Khammam",
-  //            "Komaram Bheem Asifabad",
-  //            "Mahabubabad",
-  //            "Mahabubnagar",
-  //            "Mancherial",
-  //            "Medak",
-  //            "Medchal",
-  //            "Nagarkurnool",
-  //            "Nalgonda",
-  //            "Nirmal",
-  //            "Nizamabad",
-  //            "Peddapalli",
-  //            "Rajanna Sircilla",
-  //            "Rangareddy",
-  //            "Sangareddy",
-  //            "Siddipet",
-  //            "Suryapet",
-  //            "Vikarabad",
-  //            "Wanaparthy",
-  //            "Warangal (Rural)",
-  //            "Warangal (Urban)",
-  //            "Yadadri Bhuvanagiri"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Tripura",
-  //         "districts":[
-  //            "Dhalai",
-  //            "Gomati",
-  //            "Khowai",
-  //            "North Tripura",
-  //            "Sepahijala",
-  //            "South Tripura",
-  //            "Unakoti",
-  //            "West Tripura"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Uttarakhand",
-  //         "districts":[
-  //            "Almora",
-  //            "Bageshwar",
-  //            "Chamoli",
-  //            "Champawat",
-  //            "Dehradun",
-  //            "Haridwar",
-  //            "Nainital",
-  //            "Pauri Garhwal",
-  //            "Pithoragarh",
-  //            "Rudraprayag",
-  //            "Tehri Garhwal",
-  //            "Udham Singh Nagar",
-  //            "Uttarkashi"
-  //         ]
-  //      },
-  //      {
-  //         "state":"Uttar Pradesh",
-  //         "districts":[
-  //            "Agra",
-  //            "Aligarh",
-  //            "Allahabad",
-  //            "Ambedkar Nagar",
-  //            "Amethi (Chatrapati Sahuji Mahraj Nagar)",
-  //            "Amroha (J.P. Nagar)",
-  //            "Auraiya",
-  //            "Azamgarh",
-  //            "Baghpat",
-  //            "Bahraich",
-  //            "Ballia",
-  //            "Balrampur",
-  //            "Banda",
-  //            "Barabanki",
-  //            "Bareilly",
-  //            "Basti",
-  //            "Bhadohi",
-  //            "Bijnor",
-  //            "Budaun",
-  //            "Bulandshahr",
-  //            "Chandauli",
-  //            "Chitrakoot",
-  //            "Deoria",
-  //            "Etah",
-  //            "Etawah",
-  //            "Faizabad",
-  //            "Farrukhabad",
-  //            "Fatehpur",
-  //            "Firozabad",
-  //            "Gautam Buddha Nagar",
-  //            "Ghaziabad",
-  //            "Ghazipur",
-  //            "Gonda",
-  //            "Gorakhpur",
-  //            "Hamirpur",
-  //            "Hapur (Panchsheel Nagar)",
-  //            "Hardoi",
-  //            "Hathras",
-  //            "Jalaun",
-  //            "Jaunpur",
-  //            "Jhansi",
-  //            "Kannauj",
-  //            "Kanpur Dehat",
-  //            "Kanpur Nagar",
-  //            "Kanshiram Nagar (Kasganj)",
-  //            "Kaushambi",
-  //            "Kushinagar (Padrauna)",
-  //            "Lakhimpur - Kheri",
-  //            "Lalitpur",
-  //            "Lucknow",
-  //            "Maharajganj",
-  //            "Mahoba",
-  //            "Mainpuri",
-  //            "Mathura",
-  //            "Mau",
-  //            "Meerut",
-  //            "Mirzapur",
-  //            "Moradabad",
-  //            "Muzaffarnagar",
-  //            "Pilibhit",
-  //            "Pratapgarh",
-  //            "RaeBareli",
-  //            "Rampur",
-  //            "Saharanpur",
-  //            "Sambhal (Bhim Nagar)",
-  //            "Sant Kabir Nagar",
-  //            "Shahjahanpur",
-  //            "Shamali (Prabuddh Nagar)",
-  //            "Shravasti",
-  //            "Siddharth Nagar",
-  //            "Sitapur",
-  //            "Sonbhadra",
-  //            "Sultanpur",
-  //            "Unnao",
-  //            "Varanasi"
-  //         ]
-  //      },
-  //      {
-  //         "state":"West Bengal",
-  //         "districts":[
-  //            "Alipurduar",
-  //            "Bankura",
-  //            "Birbhum",
-  //            "Burdwan (Bardhaman)",
-  //            "Cooch Behar",
-  //            "Dakshin Dinajpur (South Dinajpur)",
-  //            "Darjeeling",
-  //            "Hooghly",
-  //            "Howrah",
-  //            "Jalpaiguri",
-  //            "Kalimpong",
-  //            "Kolkata",
-  //            "Malda",
-  //            "Murshidabad",
-  //            "Nadia",
-  //            "North 24 Parganas",
-  //            "Paschim Medinipur (West Medinipur)",
-  //            "Purba Medinipur (East Medinipur)",
-  //            "Purulia",
-  //            "South 24 Parganas",
-  //            "Uttar Dinajpur (North Dinajpur)"
-  //         ]
-  //      }
-  //   ]
 
   const IndianStatesWithDistricts = {
     "Andhra Pradesh": ["Anantapur", "Chittoor", "East Godavari", "Guntur"],
@@ -1052,31 +151,55 @@ const ReceiveMaterialForm = () => {
     "Full-Format",
     "Other",
   ];
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    setFormData((prevState) => {
-      const newProblems = checked
-        ? [...prevState.problems, name]
-        : prevState.problems.filter((problem) => problem !== name);
-      return { ...prevState, problems: newProblems };
-    });
-  };
-// Problems
+  const itemOptions = [
+    "Laptop",
+    "Branded Desktop",
+    "Assembled Desktop",
+    "CPU",
+    "Motherboard",
+    "Ram",
+    "SMPS",
+    "HDD",
+    "SSD",
+    "Keyboard",
+    "Mouse",
+    "Speaker",
+    "UPS",
+    "Printer",
+    "Pen Drive",
+    "Scanner",
+    "NVR",
+    "DVR",
+    "CCTV Camera",
+    "IP Camera",
+    "DSLR",
+    "Headphone",
+    "Router",
+    "Switch",
+    "Others",
+  ];
+
+  const accessoryOptions = [
+    "Adaptor",
+    "Power Cable",
+    "Pen Drive",
+    "Other",
+    
+  ];
+
+  // Problems
   const [selectedProblems, setSelectedProblems] = useState([]);
   const [customProblem, setCustomProblem] = useState(false);
-  const [customProblemValue, setCustomProblemValue] = useState(false);
-
-  // const problemOptions = ['Starting problem', 'Booting problem', 'Charging port problem', 'Other'];
+  const [customProblemValue, setCustomProblemValue] = useState("");
 
   const handleSelectChange = (e) => {
     const selectedProblem = e.target.value;
     if (selectedProblem === "Other") {
       setCustomProblem(true);
-      setCustomProblemValue('');
+      setCustomProblemValue("");
     } else {
       setSelectedProblems([...selectedProblems, selectedProblem]);
       // setCustomProblemValue();
-
     }
   };
 
@@ -1085,41 +208,69 @@ const ReceiveMaterialForm = () => {
   };
 
   const handleAddCustomProblem = () => {
-    if (customProblemValue.trim() !== '') {
+    if (customProblemValue.trim() !== "") {
       setSelectedProblems([...selectedProblems, customProblemValue]);
-      setCustomProblemValue('');
+      setCustomProblemValue("");
       setCustomProblem(false);
-
     }
   };
 
   const handleRemoveProblem = (indexToRemove) => {
-    setSelectedProblems(selectedProblems.filter((_, index) => index !== indexToRemove));
+    setSelectedProblems(
+      selectedProblems.filter((_, index) => index !== indexToRemove)
+    );
   };
-//End
 
-  // Example usage
-  // console.log(IndianStatesWithDistricts["Maharashtra"]); // Output: ["Ahmednagar", "Akola", "Amravati", "Aurangabad"]
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      problems: selectedProblems, // Update formData with selectedProblems
+    });
+  }, [selectedProblems]);
+  //End
 
-  const initialForm = {
-    // receivedDate: "",
-    name: "",
-    address: "",
-    phone: "",
-    whatsapp: "",
-    email: "",
-    depositedBy: "",
-    depositerName: "",
-    item: "",
-    accessories: "",
-    serialNo: "",
-    problems: "",
-    billNo: "",
-    billDate: "",
-    warranty: "",
-    standby: "",
-    // password: "",
+  // Start of Accessories
+  const [selectedAccessories, setSelectedAccessories] = useState([]);
+  const [customAccessory, setCustomAccessory] = useState(false);
+  const [customAccessoryValue, setCustomAccessoryValue] = useState("");
+
+  const handleAccessoryChange = (e) => {
+    const selectedAccessory = e.target.value;
+    if (selectedAccessory === "Other") {
+      setCustomAccessory(true);
+      setCustomAccessoryValue("");
+    } else {
+      setSelectedAccessories([...selectedAccessories, selectedAccessory]);
+      // setCustomProblemValue();
+    }
   };
+
+  const handleCustomAccessoryChange = (e) => {
+    setCustomAccessoryValue(e.target.value);
+  };
+
+  const handleAddCustomAccessory = () => {
+    if (customAccessoryValue.trim() !== "") {
+      setSelectedAccessories([...selectedAccessories, customAccessoryValue]);
+      setCustomAccessoryValue("");
+      setCustomAccessory(false);
+    }
+  };
+
+  const handleRemoveAccessory = (indexToRemove) => {
+    setSelectedAccessories(
+      selectedAccessories.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      accessories: selectedAccessories, // Update formData with selectedProblems
+    });
+  }, [selectedAccessories]);
+  //End of Accessories
+
   const toTitleCase = (str) => {
     return str.replace(
       /\w\S*/g,
@@ -1154,18 +305,18 @@ const ReceiveMaterialForm = () => {
     const jsonData = JSON.stringify(formData);
     console.log(jsonData);
     try {
-      const response = await axios.post(
-        "https://service-management-ashy.vercel.app/api/jobs",
-        formData
-      );
-      console.log(response.data); // Handle success response
+      // const response = await axios.post(
+      //   "https://service-management-ashy.vercel.app/api/jobs",
+      //   formData
+      // );
+      console.log(formData); // Handle success response
       setSubmissionStatus(true);
     } catch (error) {
       console.error("Error submitting form:", error); // Handle error
       setSubmissionStatus(false);
     } finally {
       // Refresh the page
-      window.location.reload();
+      // window.location.reload();
     }
     // Here you can send jsonData to your backend or perform any other action
   };
@@ -1267,11 +418,11 @@ const ReceiveMaterialForm = () => {
               </select>
             </div>
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-              <label htmlFor="block">Block</label>
+              <label htmlFor="post">Post Office</label>
               <input
                 type="text"
-                name="block"
-                placeholder="Your block"
+                name="post"
+                placeholder="Post Office"
                 onChange={handleInputChange}
                 required
                 className={Style.Form_box_input_userName}
@@ -1296,6 +447,17 @@ const ReceiveMaterialForm = () => {
                 type="text"
                 name="landmark"
                 placeholder="Nearby landmark"
+                onChange={handleInputChange}
+                required
+                className={Style.Form_box_input_userName}
+              />
+            </div>
+            <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+              <label htmlFor="addressline">Address Line</label>
+              <input
+                type="text"
+                name="addressline"
+                placeholder="Address Line"
                 onChange={handleInputChange}
                 required
                 className={Style.Form_box_input_userName}
@@ -1422,10 +584,12 @@ const ReceiveMaterialForm = () => {
               required
             >
               <option value="">Select an Item</option>
-              <option value="Laptop">Laptop</option>
-              <option value="Desktop">Desktop</option>
-              <option value="Assembled Desktop">Assembled Desktop</option>
-              <option value="Others">Others</option>
+
+              {itemOptions.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
 
               {/* <option value="creditcard">Credit Card</option> */}
             </select>
@@ -1494,78 +658,83 @@ const ReceiveMaterialForm = () => {
           ) : null}
 
           <div className={Style.Form_box_input}>
-            <label htmlFor="accessories">Accessories Taken</label>
-            <div className={Style.Form_box_input_box}>
-              <input
-                type="text"
-                className={Style.Form_box_input_userName}
-                name="accessories"
-                placeholder="e.g. mouse, keyboard etc..."
-                onChange={handleInputChange}
-                required
-              />
+            <label htmlFor="accessories">
+              Accressories Taken
+            </label>
+            <br />
+            <section className={`${Style.Form_section}`}>
+              <div className={Style.Form_address}>
+                <select
+                  onChange={handleAccessoryChange}
+                  className={`${Style.Form_box_input_userName} ${Style.Form_address}`}
+                >
+                  <option value="">Select Accessories</option>
+                  {accessoryOptions.map((accessory) => (
+                    <option key={accessory} value={accessory}>
+                      {accessory}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {customAccessory && (
+                <div className={Style.Form_problem}>
+                  <input
+                    type="text"
+                    onChange={handleCustomAccessoryChange}
+                    placeholder="Enter your accessory"
+                    className={Style.Form_box_input_userName}
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleAddCustomAccessory();
+                    }}
+                    className={Style.problemButton}
+                  >
+                    +
+                  </button>
+
+                  {/* <button onClick={handleAddCustomProblem}  className={Style.problemButton}>+</button> */}
+                </div>
+              )}
+            </section>
+            <br />
+            <div className={Style.tagBox}>
+              {selectedAccessories.map((accessory, index) => (
+                <div key={index} className={`${Style.Form_checks}`}>
+                  <span>{accessory}</span>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleRemoveAccessory(index);
+                    }}
+                  >
+                    ✘
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
-          {/* <div className={Style.Form_box_input}>
-            <label htmlFor="serialNo">Serial No</label>
-            <input
-              type="text"
-              name="serialNo"
-              placeholder="#####"
-              className={Style.Form_box_input_userName}
-              onChange={handleInputChange}
-              required
-            />
-          </div> */}
-          {/* <div className={Style.Form_box_input}>
-              <label htmlFor="problems">
-                Problems {"("}For PC or Laptop Extra Details Required {")"}
-               
-              </label>
-              <br />
-              <section className={Style.Form_section}>
-
-                {problemOptions.map((problem) => (
-                  <div key={problem} className={` ${Style.Form_checks}`}>
-                    <input
-                      type="checkbox"
-                      name={problem}
-                      id={problem}
-                      checked={formData.problems.includes(problem)}
-                      onChange={handleCheckboxChange}
-                    />
-                    <label htmlFor={problem}>{problem}</label>
-                  </div>
-                ))}
-              </section>
-<br />
-              <div>
-                <textarea
-                  name="problems"
-                  cols="30"
-                  rows="6"
-                  placeholder="e.g. Starting problem, booting problem, charging port problem etc."
-                  onChange={handleInputChange}
-                  required
-                ></textarea>
-              </div>
-            </div>
-           */}
+          
+       
           <div className={Style.Form_box_input}>
             <label htmlFor="problems">
               Problems (For PC or Laptop Extra Details Required)
             </label>
             <br />
             <section className={`${Style.Form_section}`}>
-            <div className={Style.Form_address}>
-              <select onChange={handleSelectChange} className={`${Style.Form_box_input_userName} ${Style.Form_address}`}>
-                <option value="">Select a problem</option>
-                {problemOptions.map((problem) => (
-                  <option key={problem} value={problem}>
-                    {problem}
-                  </option>
-                ))}
-              </select>
+              <div className={Style.Form_address}>
+                <select
+                  onChange={handleSelectChange}
+                  className={`${Style.Form_box_input_userName} ${Style.Form_address}`}
+                >
+                  <option value="">Select a problem</option>
+                  {problemOptions.map((problem) => (
+                    <option key={problem} value={problem}>
+                      {problem}
+                    </option>
+                  ))}
+                </select>
               </div>
               {customProblem && (
                 <div className={Style.Form_problem}>
@@ -1574,11 +743,17 @@ const ReceiveMaterialForm = () => {
                     onChange={handleCustomProblemChange}
                     placeholder="Enter custom problem"
                     className={Style.Form_box_input_userName}
-                    
                   />
-                   <button onClick={(e) => { e.preventDefault(); handleAddCustomProblem(); }} className={Style.problemButton}>+</button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleAddCustomProblem();
+                    }}
+                    className={Style.problemButton}
+                  >
+                    +
+                  </button>
 
-                  {/* <button onClick={handleAddCustomProblem}  className={Style.problemButton}>+</button> */}
                 </div>
               )}
             </section>
@@ -1587,93 +762,59 @@ const ReceiveMaterialForm = () => {
               {selectedProblems.map((problem, index) => (
                 <div key={index} className={`${Style.Form_checks}`}>
                   <span>{problem}</span>
-                  <button onClick={(e) =>{e.preventDefault(); handleRemoveProblem(index)}}>X</button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleRemoveProblem(index);
+                    }}
+                  >
+                    ✘
+                  </button>
                 </div>
               ))}
-              
             </div>
           </div>
-          {/* <div className={Style.Form_box_input}>
-            <label htmlFor="warranty">Warranty</label>
-            <div Style={"display:flex;"}>
-              <label>
-                <input
-                  type="radio"
-                  name="warranty"
-                  value="true"
-                  onChange={handleInputChange}
-                  required
-                />
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="warranty"
-                  value="false"
-                  onChange={handleInputChange}
-                  required
-                />
-                No
-              </label>
-            </div>
-          </div>
-          <div className={Style.Form_box_input}>
-            <label htmlFor="standby">Stand By</label>
-            <div Style={"display:flex;"}>
-              <label>
-                <input
-                  type="radio"
-                  name="standby"
-                  value="true"
-                  onChange={handleInputChange}
-                  required
-                />
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="standby"
-                  value="false"
-                  onChange={handleInputChange}
-                  required
-                />
-                No
-              </label>
-            </div>
-          </div> */}
+          <section className={Style.Form_section}>
+          <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
 
-          {/* <div className={Style.Form_box_input}>
-            <label htmlFor="password">Pasword</label>
-            <div className={Style.Form_box_input_box}>
-              <div className={Style.Form_box_input_box_icon}>
-                <MdOutlinePassword />
-              </div>
-              <input
-                type="password"
-                name="password"
-                placeholder="37e3uyj099#*u"
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-          </div> */}
-          {/* <div className={Style.Form_box_input}>
-            <label htmlFor="signature">Recieved By Signature</label>
-            <div className={Style.Form_box_input_box}>
-              <div className={Style.Form_box_input_box_icon}>
-                <MdOutlineVerified />
-              </div>
-              <input
-                type="text"
-                name="signature"
-                placeholder=""
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-          </div> */}
+            <label htmlFor="billNo">Bill/AMC No</label>
+            <input
+              type="text"
+              name="billNo"
+              placeholder="#####"
+              className={Style.Form_box_input_userName}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+
+            <label htmlFor="bill">Bill/AMC Upload</label>
+            <input
+              type="file"
+              name="bill"
+              placeholder="Select bill"
+              accept=".pdf,.doc,.docx, .jpg, .jpeg,.png" // Optional: Limit accepted file types
+              // style={{ display: 'none' }}
+              // className={Style.Form_box_input_userName}
+              onChange={handleInputChange}
+              className={Style.fileInput}
+              required
+            />
+          </div>
+          <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+
+            <label htmlFor="billDate">Bill/AMC Date</label>
+            <input
+              type="date"
+              name="billDate"
+              placeholder="#####"
+              className={Style.Form_box_input_userName}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          </section>
           <div className={Style.Form_box_btn}>
             <Button
               btnName="Submit"

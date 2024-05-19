@@ -61,12 +61,12 @@
 
 .tagBox span{
     
-        border: 1px solid #ba4f00;
-        background: #ffa50021;
+        border: 1px solid darkorange;
+        background: #ffcb0030;
         border-radius: 20px;
         padding: 2px 12px;
         color: darkorange;
-        font-weight: bold;
+        font-weight: bolder;
       
 }
 .problemButton{
@@ -109,6 +109,22 @@
     outline: none;
 }
 
+
+.fileInput{
+    width: 100%;
+}
+input::file-selector-button {
+    width: 100%;
+    border: 1px solid var(--icons-color);
+    padding: 1rem;
+    /* border-radius: 1rem; */
+    background-color: transparent;
+    margin-top: .5rem;
+    outline: none;
+    cursor: pointer;
+    /* content: "kak"; */
+  }
+  
 .Form_section {
     display: flex;
     flex-wrap: wrap;
