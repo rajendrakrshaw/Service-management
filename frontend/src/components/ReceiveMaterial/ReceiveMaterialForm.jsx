@@ -12,6 +12,7 @@ import {
   MdOutlinePassword,
   MdOutlineVerified,
   MdOutlineWhatsapp,
+  MdAdd,
 } from "react-icons/md";
 import {
   TiSocialFacebook,
@@ -1045,11 +1046,11 @@ const ReceiveMaterialForm = () => {
     "Internet",
     "Slow",
     "Hung",
-    "Windows Update",
+    "Update",
     "Restart",
     "C-Format",
     "Full-Format",
-    "Others",
+    "Other",
   ];
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
@@ -1060,6 +1061,43 @@ const ReceiveMaterialForm = () => {
       return { ...prevState, problems: newProblems };
     });
   };
+// Problems
+  const [selectedProblems, setSelectedProblems] = useState([]);
+  const [customProblem, setCustomProblem] = useState(false);
+  const [customProblemValue, setCustomProblemValue] = useState(false);
+
+  // const problemOptions = ['Starting problem', 'Booting problem', 'Charging port problem', 'Other'];
+
+  const handleSelectChange = (e) => {
+    const selectedProblem = e.target.value;
+    if (selectedProblem === "Other") {
+      setCustomProblem(true);
+      setCustomProblemValue('');
+    } else {
+      setSelectedProblems([...selectedProblems, selectedProblem]);
+      // setCustomProblemValue();
+
+    }
+  };
+
+  const handleCustomProblemChange = (e) => {
+    setCustomProblemValue(e.target.value);
+  };
+
+  const handleAddCustomProblem = () => {
+    if (customProblemValue.trim() !== '') {
+      setSelectedProblems([...selectedProblems, customProblemValue]);
+      setCustomProblemValue('');
+      setCustomProblem(false);
+
+    }
+  };
+
+  const handleRemoveProblem = (indexToRemove) => {
+    setSelectedProblems(selectedProblems.filter((_, index) => index !== indexToRemove));
+  };
+//End
+
   // Example usage
   // console.log(IndianStatesWithDistricts["Maharashtra"]); // Output: ["Ahmednagar", "Akola", "Amravati", "Aurangabad"]
 
@@ -1435,7 +1473,7 @@ const ReceiveMaterialForm = () => {
                 <input
                   type="text"
                   name="password"
-                  placeholder="Password of system" 
+                  placeholder="Password of system"
                   onChange={handleInputChange}
                   required
                   className={Style.Form_box_input_userName}
@@ -1479,7 +1517,7 @@ const ReceiveMaterialForm = () => {
               required
             />
           </div> */}
-            <div className={Style.Form_box_input}>
+          {/* <div className={Style.Form_box_input}>
               <label htmlFor="problems">
                 Problems {"("}For PC or Laptop Extra Details Required {")"}
                
@@ -1512,32 +1550,47 @@ const ReceiveMaterialForm = () => {
                 ></textarea>
               </div>
             </div>
-          
-
+           */}
           <div className={Style.Form_box_input}>
-            <label htmlFor="billNo">Bill/AMC No</label>
-            <input
-              type="text"
-              name="billNo"
-              placeholder="#####"
-              className={Style.Form_box_input_userName}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className={Style.Form_box_input}>
-            <label htmlFor="billDate">Bill/AMC Date</label>
-            <div className={Style.Form_box_input_box}>
-              <div className={Style.Form_box_input_box_icon}>
-                <HiOutlineCalendar />
+            <label htmlFor="problems">
+              Problems (For PC or Laptop Extra Details Required)
+            </label>
+            <br />
+            <section className={`${Style.Form_section}`}>
+            <div className={Style.Form_address}>
+              <select onChange={handleSelectChange} className={`${Style.Form_box_input_userName} ${Style.Form_address}`}>
+                <option value="">Select a problem</option>
+                {problemOptions.map((problem) => (
+                  <option key={problem} value={problem}>
+                    {problem}
+                  </option>
+                ))}
+              </select>
               </div>
-              <input
-                type="date"
-                name="billDate"
-                placeholder="dd-mm-yyyy"
-                onChange={handleInputChange}
-                required
-              />
+              {customProblem && (
+                <div className={Style.Form_problem}>
+                  <input
+                    type="text"
+                    onChange={handleCustomProblemChange}
+                    placeholder="Enter custom problem"
+                    className={Style.Form_box_input_userName}
+                    
+                  />
+                   <button onClick={(e) => { e.preventDefault(); handleAddCustomProblem(); }} className={Style.problemButton}>+</button>
+
+                  {/* <button onClick={handleAddCustomProblem}  className={Style.problemButton}>+</button> */}
+                </div>
+              )}
+            </section>
+            <br />
+            <div className={Style.tagBox}>
+              {selectedProblems.map((problem, index) => (
+                <div key={index} className={`${Style.Form_checks}`}>
+                  <span>{problem}</span>
+                  <button onClick={(e) =>{e.preventDefault(); handleRemoveProblem(index)}}>X</button>
+                </div>
+              ))}
+              
             </div>
           </div>
           {/* <div className={Style.Form_box_input}>

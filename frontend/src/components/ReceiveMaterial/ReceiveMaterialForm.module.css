@@ -25,6 +25,12 @@
 .Form_address{
     width: 32%;
 }
+.Form_problem{
+    width:32%;
+    display: flex;
+    /* justify-content: center; */
+    align-items: end;
+}
 .Form_checks{
     width: 25%;
     display: flex;
@@ -46,7 +52,44 @@
 .radio{
     color: var(--icons-color);
 }
+.tagBox{
+    
+        display: flex;
+        flex-wrap: wrap;
+      
+}
 
+.tagBox span{
+    
+        border: 1px solid #ba4f00;
+        background: #ffa50021;
+        border-radius: 20px;
+        padding: 2px 12px;
+        color: darkorange;
+        font-weight: bold;
+      
+}
+.problemButton{
+    border: 1px solid orange;
+  background: orange;
+  color: white;
+  font-size: 20px;
+  padding: 8px 20px;
+  margin: 1px 2px;
+
+}
+
+.tagBox button{
+    background: none;
+  border: none;
+   font-family:Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 1000;
+  margin-left: -20px;
+  margin-bottom: 26px;
+  color: darkorange;
+ 
+}
 .Form_box_input label{
     display: block;
     width: 100%;
@@ -147,7 +190,7 @@
         width: 90%;
        
     }
-    .Form_address{
+    .Form_address,.Form_problem{
         width: 100%;
     }
     .Form_checks{
