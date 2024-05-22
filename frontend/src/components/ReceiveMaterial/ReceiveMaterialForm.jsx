@@ -445,15 +445,17 @@ const ReceiveMaterialForm = () => {
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
               <label htmlFor="pincode">Pincode *</label>
               <input
-                type="text"
+                type="tel"
+                className={Style.Form_box_input_userName}
+
                 name="pincode"
                 placeholder="Your pincode"
                 onChange={handleInputChange}
                 pattern="[0-9]{6}" 
                 maxLength={6}
-                inputMode="numeric"
                 required
-                className={Style.Form_box_input_userName}
+                inputMode="numeric"
+
               />
             </div>
            
