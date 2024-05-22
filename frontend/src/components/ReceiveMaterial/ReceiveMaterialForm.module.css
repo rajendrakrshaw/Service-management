@@ -61,13 +61,13 @@
 
 .tagBox span{
     
-        border: 1px solid darkorange;
+        /* border: 1px solid darkorange; */
         background: #ffcb0030;
         border-radius: 20px;
         padding: 2px 12px;
         color: darkorange;
-        font-weight: bolder;
-      
+        font-weight: 750;
+        font-family: sans-serif;
 }
 .problemButton{
     border: 1px solid orange;
@@ -113,6 +113,7 @@
 .fileInput{
     width: 100%;
 }
+
 input::file-selector-button {
     width: 100%;
     border: 1px solid var(--icons-color);

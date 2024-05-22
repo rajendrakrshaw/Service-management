@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { HiOutlineCalendar, HiOutlineMail } from "react-icons/hi";
+import { HiOutlineCalendar, HiOutlineMail, HiStar } from "react-icons/hi";
 import {
   MdOutlineHttp,
   MdOutlineContentCopy,
@@ -13,6 +13,7 @@ import {
   MdOutlineVerified,
   MdOutlineWhatsapp,
   MdAdd,
+  MdStar,
 } from "react-icons/md";
 import {
   TiSocialFacebook,
@@ -42,6 +43,7 @@ const ReceiveMaterialForm = () => {
     accessories: [],
     // serialNo: "",
     problems: [],
+    serviceType: "",
     billNo: "",
     bill: "",
     billDate: "",
@@ -357,7 +359,7 @@ const ReceiveMaterialForm = () => {
           </div> */}
 
           <div className={Style.Form_box_input}>
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Name *</label>
             <input
               type="text"
               name="name"
@@ -385,7 +387,7 @@ const ReceiveMaterialForm = () => {
           <hr />
           <section className={Style.Form_section}>
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-              <label htmlFor="state">State</label>
+              <label htmlFor="state">State *</label>
               <select
                 name="state"
                 onChange={handleInputChange}
@@ -402,7 +404,7 @@ const ReceiveMaterialForm = () => {
             </div>
 
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-              <label htmlFor="district">District</label>
+              <label htmlFor="district">District *</label>
               <select
                 name="district"
                 onChange={handleInputChange}
@@ -418,7 +420,7 @@ const ReceiveMaterialForm = () => {
               </select>
             </div>
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-              <label htmlFor="post">Post Office</label>
+              <label htmlFor="post">Post Office *</label>
               <input
                 type="text"
                 name="post"
@@ -430,30 +432,20 @@ const ReceiveMaterialForm = () => {
             </div>
 
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-              <label htmlFor="pincode">Pincode</label>
+              <label htmlFor="pincode">Pincode *</label>
               <input
                 type="text"
                 name="pincode"
                 placeholder="Your pincode"
                 onChange={handleInputChange}
-                required
-                className={Style.Form_box_input_userName}
-              />
-            </div>
-
-            <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-              <label htmlFor="landmark">Landmark</label>
-              <input
-                type="text"
-                name="landmark"
-                placeholder="Nearby landmark"
-                onChange={handleInputChange}
+                pattern="[0-9]{6}" 
+                maxLength={6}
                 required
                 className={Style.Form_box_input_userName}
               />
             </div>
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-              <label htmlFor="addressline">Address Line</label>
+              <label htmlFor="addressline">Address *</label>
               <input
                 type="text"
                 name="addressline"
@@ -463,24 +455,22 @@ const ReceiveMaterialForm = () => {
                 className={Style.Form_box_input_userName}
               />
             </div>
+            <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+              <label htmlFor="landmark">Landmark</label>
+              <input
+                type="text"
+                name="landmark"
+                placeholder="Nearby landmark"
+                onChange={handleInputChange}
+                
+                className={Style.Form_box_input_userName}
+              />
+            </div>
+            
           </section>
 
-          {/* <div className={Style.Form_box_input}>
-            <label htmlFor="address">Address</label>
-            <div>
-              <textarea
-                name="address"
-                cols="30"
-                rows="6"
-                placeholder="your address"
-                onChange={handleInputChange}
-                required
-              ></textarea>
-            </div>
-          </div> */}
-
           <div className={Style.Form_box_input}>
-            <label htmlFor="whatsapp">WhatsApp No</label>
+            <label htmlFor="whatsapp">WhatsApp No *</label>
             <div className={Style.Form_box_input_box}>
               <div className={Style.Form_box_input_box_icon}>
                 <MdOutlineWhatsapp />
@@ -497,7 +487,7 @@ const ReceiveMaterialForm = () => {
             </div>
           </div>
           <div className={Style.Form_box_input}>
-            <label htmlFor="phone">Phone No</label>
+            <label htmlFor="phone">Phone No *</label>
             <div className={Style.Form_box_input_box}>
               <div className={Style.Form_box_input_box_icon}>
                 <MdOutlinePhone />
@@ -514,7 +504,7 @@ const ReceiveMaterialForm = () => {
             </div>
           </div>
           <div className={Style.Form_box_input}>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Email *</label>
             <div className={Style.Form_box_input_box}>
               <div className={Style.Form_box_input_box_icon}>
                 <MdOutlineMail />
@@ -529,7 +519,7 @@ const ReceiveMaterialForm = () => {
             </div>
           </div>
           <div className={Style.Form_box_input}>
-            <label htmlFor="depositedBy">Deposited By</label>
+            <label htmlFor="depositedBy">Deposited By *</label>
             <div>
               <select
                 name="depositedBy"
@@ -575,7 +565,7 @@ const ReceiveMaterialForm = () => {
           </div>
 
           <div className={Style.Form_box_input}>
-            <label htmlFor="item">Item</label>
+            <label htmlFor="item">Item *</label>
             {/* <div className={Style.Form_box_input_box}> */}
             <select
               name="item"
@@ -605,12 +595,10 @@ const ReceiveMaterialForm = () => {
               />
             ) : null}
           </div>
-          {formData.item === "Laptop" ||
-          formData.item === "Desktop" ||
-          formData.item === "Assembled Desktop" ? (
+          
             <section className={Style.Form_section}>
               <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-                <label htmlFor="brnad">Brand</label>
+                <label htmlFor="brnad">Brand *</label>
                 <input
                   type="text"
                   name="brand"
@@ -622,7 +610,7 @@ const ReceiveMaterialForm = () => {
               </div>
 
               <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-                <label htmlFor="model">Model</label>
+                <label htmlFor="model">Model *</label>
                 <input
                   type="text"
                   name="model"
@@ -632,19 +620,9 @@ const ReceiveMaterialForm = () => {
                   className={Style.Form_box_input_userName}
                 />
               </div>
+          
               <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-                <label htmlFor="model">Password</label>
-                <input
-                  type="text"
-                  name="password"
-                  placeholder="Password of system"
-                  onChange={handleInputChange}
-                  required
-                  className={Style.Form_box_input_userName}
-                />
-              </div>
-              <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-                <label htmlFor="serialno">Serial No</label>
+                <label htmlFor="serialno">Serial No *</label>
                 <input
                   type="text"
                   name="serialno"
@@ -654,12 +632,27 @@ const ReceiveMaterialForm = () => {
                   className={Style.Form_box_input_userName}
                 />
               </div>
+              {formData.item === "Laptop" ||
+          formData.item === "Branded Desktop" ||
+          formData.item === "Assembled Desktop" ? (
+              <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+                <label htmlFor="model">Password *</label>
+                <input
+                  type="text"
+                  name="password"
+                  placeholder="Password of system"
+                  onChange={handleInputChange}
+                  required
+                  className={Style.Form_box_input_userName}
+                />
+              </div>
+              ) : null}
             </section>
-          ) : null}
+          
 
           <div className={Style.Form_box_input}>
             <label htmlFor="accessories">
-              Accressories Taken
+              Accessories Taken 
             </label>
             <br />
             <section className={`${Style.Form_section}`}>
@@ -719,7 +712,7 @@ const ReceiveMaterialForm = () => {
        
           <div className={Style.Form_box_input}>
             <label htmlFor="problems">
-              Problems (For PC or Laptop Extra Details Required)
+              Problems (For PC or Laptop Extra Details Required) *
             </label>
             <br />
             <section className={`${Style.Form_section}`}>
@@ -728,7 +721,7 @@ const ReceiveMaterialForm = () => {
                   onChange={handleSelectChange}
                   className={`${Style.Form_box_input_userName} ${Style.Form_address}`}
                 >
-                  <option value="">Select a problem</option>
+                  <option value="">Select problems</option>
                   {problemOptions.map((problem) => (
                     <option key={problem} value={problem}>
                       {problem}
@@ -774,10 +767,28 @@ const ReceiveMaterialForm = () => {
               ))}
             </div>
           </div>
+          <div className={Style.Form_box_input}>
+            <label htmlFor="serviceType">Service Type *</label>
+            <div>
+              <select
+                name="serviceType"
+                className={Style.Form_box_input_userName}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select an option</option>
+                <option value="Warranty">Warranty</option>
+                <option value="Paid">Paid</option>
+                {/* <option value="creditcard">Credit Card</option> */}
+              </select>
+            </div>
+          </div>
+          {formData.serviceType === "Warranty" ? (
           <section className={Style.Form_section}>
+            
           <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
 
-            <label htmlFor="billNo">Bill/AMC No</label>
+            <label htmlFor="billNo">Bill/AMC No *</label>
             <input
               type="text"
               name="billNo"
@@ -787,9 +798,10 @@ const ReceiveMaterialForm = () => {
               required
             />
           </div>
+          
           <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
 
-            <label htmlFor="bill">Bill/AMC Upload</label>
+            <label htmlFor="bill">Bill/AMC Upload *</label>
             <input
               type="file"
               name="bill"
@@ -804,7 +816,7 @@ const ReceiveMaterialForm = () => {
           </div>
           <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
 
-            <label htmlFor="billDate">Bill/AMC Date</label>
+            <label htmlFor="billDate">Bill/AMC Date *</label>
             <input
               type="date"
               name="billDate"
@@ -815,6 +827,7 @@ const ReceiveMaterialForm = () => {
             />
           </div>
           </section>
+          ): null}
           <div className={Style.Form_box_btn}>
             <Button
               btnName="Submit"
