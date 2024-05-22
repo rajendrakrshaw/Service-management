@@ -317,6 +317,7 @@ const ReceiveMaterialForm = () => {
       console.error("Error submitting form:", error); // Handle error
       setSubmissionStatus(false);
     } finally {
+      alert("Thank You. Please Contact Service Reception, Your id is ###########");
       // Refresh the page
       // window.location.reload();
     }
@@ -430,20 +431,6 @@ const ReceiveMaterialForm = () => {
                 className={Style.Form_box_input_userName}
               />
             </div>
-
-            <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-              <label htmlFor="pincode">Pincode *</label>
-              <input
-                type="text"
-                name="pincode"
-                placeholder="Your pincode"
-                onChange={handleInputChange}
-                pattern="[0-9]{6}" 
-                maxLength={6}
-                required
-                className={Style.Form_box_input_userName}
-              />
-            </div>
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
               <label htmlFor="addressline">Address *</label>
               <input
@@ -455,6 +442,21 @@ const ReceiveMaterialForm = () => {
                 className={Style.Form_box_input_userName}
               />
             </div>
+            <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+              <label htmlFor="pincode">Pincode *</label>
+              <input
+                type="text"
+                name="pincode"
+                placeholder="Your pincode"
+                onChange={handleInputChange}
+                pattern="[0-9]{6}" 
+                maxLength={6}
+                inputMode="numeric"
+                required
+                className={Style.Form_box_input_userName}
+              />
+            </div>
+           
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
               <label htmlFor="landmark">Landmark</label>
               <input
@@ -482,6 +484,8 @@ const ReceiveMaterialForm = () => {
                 pattern="[0-9]{10}" // Only allows exactly 10 numerical digits
                 maxLength="10" // Restricts the input to 10 characters
                 onChange={handleInputChange}
+                inputMode="numeric"
+
                 required
               />
             </div>
@@ -500,6 +504,8 @@ const ReceiveMaterialForm = () => {
                 pattern="[0-9]{10}" // Only allows exactly 10 numerical digits
                 maxLength="10" // Restricts the input to 10 characters
                 required
+                inputMode="numeric"
+
               />
             </div>
           </div>
