@@ -43,11 +43,14 @@ const ReceiveMaterialForm = () => {
     accessories: [],
     // serialNo: "",
     problems: [],
+    problemDescription: "",
     serviceType: "",
     billNo: "",
-    bill: "",
+    bill: null,
+    billName: "",
     billDate: "",
     warranty: "",
+    billPreview: null,
     standby: "",
   });
 
@@ -181,13 +184,7 @@ const ReceiveMaterialForm = () => {
     "Others",
   ];
 
-  const accessoryOptions = [
-    "Adaptor",
-    "Power Cable",
-    "Pen Drive",
-    "Other",
-    
-  ];
+  const accessoryOptions = ["Adaptor", "Power Cable", "Pen Drive", "Other"];
 
   // Problems
   const [selectedProblems, setSelectedProblems] = useState([]);
@@ -265,6 +262,13 @@ const ReceiveMaterialForm = () => {
     );
   };
 
+  const handleRemoveFile = () => {
+    setFormData({
+      ...formData,
+      bill: null,
+    });
+  };
+
   useEffect(() => {
     setFormData({
       ...formData,
@@ -282,7 +286,22 @@ const ReceiveMaterialForm = () => {
 
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
+
+    if (name === "bill") {
+      const file = files[0];
+      if (file) {
+        // const filePreview = URL.createObjectURL(file);
+        // console.log('Selected file:', file); // Debugging log
+        // console.log('File name:', file.name); // Debugging log
+        setFormData({
+          ...formData,
+          bill: file,
+          billName: file.name,
+          // billPreview: filePreview,
+        });
+      }
+    }
 
     if (name === "state") {
       const selectedDistricts = IndianStatesWithDistricts[value] || [];
@@ -295,7 +314,7 @@ const ReceiveMaterialForm = () => {
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: name === "name" ? toTitleCase(value) : value,
+        [name]: name === name ? toTitleCase(value) : value,
       }));
     }
   };
@@ -317,7 +336,9 @@ const ReceiveMaterialForm = () => {
       console.error("Error submitting form:", error); // Handle error
       setSubmissionStatus(false);
     } finally {
-      alert("Thank You. Please Contact Service Reception, Your id is ###########");
+      alert(
+        "Thank You. Please Contact Service Reception, Your id is ###########"
+      );
       // Refresh the page
       // window.location.reload();
     }
@@ -427,6 +448,7 @@ const ReceiveMaterialForm = () => {
                 name="post"
                 placeholder="Post Office"
                 onChange={handleInputChange}
+                value={formData.post}
                 required
                 className={Style.Form_box_input_userName}
               />
@@ -438,6 +460,7 @@ const ReceiveMaterialForm = () => {
                 name="addressline"
                 placeholder="Address Line"
                 onChange={handleInputChange}
+                value={formData.addressline}
                 required
                 className={Style.Form_box_input_userName}
               />
@@ -447,18 +470,16 @@ const ReceiveMaterialForm = () => {
               <input
                 type="tel"
                 className={Style.Form_box_input_userName}
-
                 name="pincode"
                 placeholder="Your pincode"
                 onChange={handleInputChange}
-                pattern="[0-9]{6}" 
+                pattern="[0-9]{6}"
                 maxLength={6}
                 required
                 inputMode="numeric"
-
               />
             </div>
-           
+
             <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
               <label htmlFor="landmark">Landmark</label>
               <input
@@ -466,11 +487,10 @@ const ReceiveMaterialForm = () => {
                 name="landmark"
                 placeholder="Nearby landmark"
                 onChange={handleInputChange}
-                
+                value={formData.landmark}
                 className={Style.Form_box_input_userName}
               />
             </div>
-            
           </section>
 
           <div className={Style.Form_box_input}>
@@ -487,7 +507,6 @@ const ReceiveMaterialForm = () => {
                 maxLength="10" // Restricts the input to 10 characters
                 onChange={handleInputChange}
                 inputMode="numeric"
-
                 required
               />
             </div>
@@ -507,7 +526,6 @@ const ReceiveMaterialForm = () => {
                 maxLength="10" // Restricts the input to 10 characters
                 required
                 inputMode="numeric"
-
               />
             </div>
           </div>
@@ -567,6 +585,7 @@ const ReceiveMaterialForm = () => {
                 placeholder="Enter depositer's name"
                 className={Style.Form_box_input_userName}
                 onChange={handleInputChange}
+                value={formData.depositedBy}
                 required
               />
             ) : null}
@@ -599,50 +618,53 @@ const ReceiveMaterialForm = () => {
                 placeholder="Enter Item Name"
                 className={Style.Form_box_input_userName}
                 onChange={handleInputChange}
+                value={formData.item}
                 required
               />
             ) : null}
           </div>
-          
-            <section className={Style.Form_section}>
-              <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-                <label htmlFor="brnad">Brand *</label>
-                <input
-                  type="text"
-                  name="brand"
-                  placeholder="Brand name"
-                  onChange={handleInputChange}
-                  required
-                  className={Style.Form_box_input_userName}
-                />
-              </div>
 
-              <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-                <label htmlFor="model">Model *</label>
-                <input
-                  type="text"
-                  name="model"
-                  placeholder="Model name"
-                  onChange={handleInputChange}
-                  required
-                  className={Style.Form_box_input_userName}
-                />
-              </div>
-          
-              <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-                <label htmlFor="serialno">Serial No *</label>
-                <input
-                  type="text"
-                  name="serialno"
-                  placeholder="#######"
-                  onChange={handleInputChange}
-                  required
-                  className={Style.Form_box_input_userName}
-                />
-              </div>
-              {formData.item === "Laptop" ||
-          formData.item === "Branded Desktop" ||
-          formData.item === "Assembled Desktop" ? (
+          <section className={Style.Form_section}>
+            <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+              <label htmlFor="brnad">Brand *</label>
+              <input
+                type="text"
+                name="brand"
+                placeholder="Brand name"
+                onChange={handleInputChange}
+                value={formData.brand}
+                required
+                className={Style.Form_box_input_userName}
+              />
+            </div>
+
+            <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+              <label htmlFor="model">Model *</label>
+              <input
+                type="text"
+                name="model"
+                placeholder="Model name"
+                onChange={handleInputChange}
+                value={formData.model}
+                required
+                className={Style.Form_box_input_userName}
+              />
+            </div>
+
+            <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+              <label htmlFor="serialno">Serial No *</label>
+              <input
+                type="text"
+                name="serialno"
+                placeholder="#######"
+                onChange={handleInputChange}
+                required
+                className={Style.Form_box_input_userName}
+              />
+            </div>
+            {formData.item === "Laptop" ||
+            formData.item === "Branded Desktop" ||
+            formData.item === "Assembled Desktop" ? (
               <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
                 <label htmlFor="model">Password *</label>
                 <input
@@ -654,14 +676,11 @@ const ReceiveMaterialForm = () => {
                   className={Style.Form_box_input_userName}
                 />
               </div>
-              ) : null}
-            </section>
-          
+            ) : null}
+          </section>
 
           <div className={Style.Form_box_input}>
-            <label htmlFor="accessories">
-              Accessories Taken 
-            </label>
+            <label htmlFor="accessories">Accessories Taken</label>
             <br />
             <section className={`${Style.Form_section}`}>
               <div className={Style.Form_address}>
@@ -716,8 +735,7 @@ const ReceiveMaterialForm = () => {
               ))}
             </div>
           </div>
-          
-       
+
           <div className={Style.Form_box_input}>
             <label htmlFor="problems">
               Problems (For PC or Laptop Extra Details Required) *
@@ -737,7 +755,7 @@ const ReceiveMaterialForm = () => {
                   ))}
                 </select>
               </div>
-              {customProblem && (
+              {/* {customProblem && (
                 <div className={Style.Form_problem}>
                   <input
                     type="text"
@@ -754,10 +772,22 @@ const ReceiveMaterialForm = () => {
                   >
                     +
                   </button>
-
                 </div>
-              )}
+              )} */}
             </section>
+            <div className={Style.Form_box_input}>
+              <label htmlFor="name">Problem Description (if any)</label>
+              <textarea
+                name="problemDescription"
+                placeholder="Enter your problem Descrition"
+                className={Style.Form_box_input_userName}
+                onChange={handleInputChange}
+                value={formData.problemDescription}
+                required
+                // cols="100"
+              />
+            </div>
+
             <br />
             <div className={Style.tagBox}>
               {selectedProblems.map((problem, index) => (
@@ -792,50 +822,72 @@ const ReceiveMaterialForm = () => {
             </div>
           </div>
           {formData.serviceType === "Warranty" ? (
-          <section className={Style.Form_section}>
-            
-          <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+            <section className={Style.Form_section}>
+              <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+                <label htmlFor="billNo">Bill/AMC No *</label>
+                <input
+                  type="text"
+                  name="billNo"
+                  placeholder="#####"
+                  className={Style.Form_box_input_userName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
-            <label htmlFor="billNo">Bill/AMC No *</label>
-            <input
-              type="text"
-              name="billNo"
-              placeholder="#####"
-              className={Style.Form_box_input_userName}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          
-          <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-
-            <label htmlFor="bill">Bill/AMC Upload *</label>
-            <input
-              type="file"
-              name="bill"
-              placeholder="Select bill"
-              accept=".pdf,.doc,.docx, .jpg, .jpeg,.png" // Optional: Limit accepted file types
-              // style={{ display: 'none' }}
-              // className={Style.Form_box_input_userName}
-              onChange={handleInputChange}
-              className={Style.fileInput}
-              required
-            />
-          </div>
-          <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
-
-            <label htmlFor="billDate">Bill/AMC Date *</label>
-            <input
-              type="date"
-              name="billDate"
-              placeholder="#####"
-              className={Style.Form_box_input_userName}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          </section>
-          ): null}
+              <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+                <label htmlFor="bill">Bill/AMC Upload *</label>
+                <input
+                  type="file"
+                  name="bill"
+                  placeholder="Select bill"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                  onChange={handleInputChange}
+                  className={Style.fileInput}
+                  required
+                />
+                {formData.bill && (
+                  <div className={Style.fileDetails}>
+                    <span>{formData.billName}</span>
+                    <button
+                      type="button"
+                      onClick={handleRemoveFile}
+                      className={Style.removeButton}
+                    >
+                      ✘
+                    </button>
+                    {/* {formData.bill.type.startsWith("image/") ? (
+                      <img
+                        src={formData.billPreview}
+                        alt="Preview"
+                        className={Style.filePreview}
+                      />
+                    ) : (
+                      <a
+                        href={formData.billPreview}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={Style.filePreviewLink}
+                      >
+                        View File
+                      </a>
+                    )} */}
+                  </div>
+                )}
+              </div>
+              <div className={`${Style.Form_box_input} ${Style.Form_address}`}>
+                <label htmlFor="billDate">Bill/AMC Date *</label>
+                <input
+                  type="date"
+                  name="billDate"
+                  placeholder="#####"
+                  className={Style.Form_box_input_userName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+            </section>
+          ) : null}
           <div className={Style.Form_box_btn}>
             <Button
               btnName="Submit"
